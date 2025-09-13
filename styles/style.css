@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+:root {
+  --bg-color: #fafafa;
+  --font-color: #1f1f1f;
+  --border-color: #cccccc;
+  --border-focus-color: #414141;
+  --bg-book-color: #bda199;
+}
+
+body {
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  background-color: var(--bg-color);
+  color: var(--font-color);
+  padding: 30px;
+}
+
+button {
+  cursor: pointer;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 2.1rem;
+}
+
+#books-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.book__card {
+  padding: 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  box-shadow: 1px 2px 0 rgb(0 0 0 / 0.05);
+  width: 200px;
+  height: 250px;
+}
+
+.book__card h2 {
+  text-wrap: balance;
+  text-align: center;
+  margin-bottom: 10px;
+  background-color: var(--bg-book-color);
+  width: 100%;
+  border-radius: 3px;
+}
+
+.book__card p {
+  font-size: 0.875rem;
+}
+
+dialog {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+}
+
+.close-dialog {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+dialog h2 {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form label {
+  margin-bottom: 0;
+}
+
+.form input {
+  padding: 0 0 0 6px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+}
+
+.form input:focus {
+  outline: none;
+  border: 1px solid var(--border-focus-color);
+}
+
+.form fieldset {
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
