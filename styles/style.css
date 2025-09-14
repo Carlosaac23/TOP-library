@@ -31,6 +31,17 @@ button {
   font-size: 2.1rem;
 }
 
+#add-book {
+  border: 1px solid skyblue;
+  border-radius: 6px;
+  background-color: rgb(204, 255, 248);
+  padding: 2px 10px;
+}
+
+#add-book:hover {
+  opacity: 0.8;
+}
+
 #books-container {
   display: flex;
   flex-wrap: wrap;
@@ -57,6 +68,37 @@ button {
 
 .book__card p {
   font-size: 0.875rem;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.delete-btn {
+  border: 1px solid red;
+  border-radius: 6px;
+  color: red;
+  background-color: rgb(255, 204, 204);
+  padding: 2px 10px;
+}
+
+.delete-btn:hover {
+  opacity: 0.8;
+}
+
+.change-btn {
+  border: 1px solid green;
+  border-radius: 6px;
+  color: green;
+  background-color: rgb(213, 255, 204);
+  padding: 2px 10px;
+}
+
+.change-btn:hover {
+  opacity: 0.8;
 }
 
 dialog {
