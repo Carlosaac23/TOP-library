@@ -3,7 +3,7 @@ const form = document.querySelector('.form');
 const addBookBtn = document.getElementById('add-book');
 const closeDialog = document.querySelector('.close-dialog');
 
-const myLibrary = [];
+let myLibrary = [];
 
 function Book(id, title, author, pages, read) {
   this.id = id;
@@ -12,6 +12,11 @@ function Book(id, title, author, pages, read) {
   this.pages = pages;
   this.read = read;
 }
+
+Book.prototype.changeReadStatus = function () {
+  this.read = !this.read;
+  return this.read;
+};
 
 addBookBtn.addEventListener('click', () => {
   dialog.showModal();
@@ -50,25 +55,49 @@ function renderBooks(array) {
     const bookCard = document.createElement('div');
     bookCard.classList.add('book__card');
 
-    const bookTitle = document.createElement('h2');
-    bookTitle.textContent = capitalize(title);
+    const bookTitleEl = document.createElement('h2');
+    bookTitleEl.textContent = capitalize(title);
 
-    const bookAuthor = document.createElement('p');
-    bookAuthor.textContent = `Author: ${capitalize(author)}`;
+    const bookAuthorEl = document.createElement('p');
+    bookAuthorEl.textContent = `Author: ${capitalize(author)}`;
 
-    const bookPages = document.createElement('p');
-    bookPages.textContent = `Pages: ${pages}`;
+    const bookPagesEl = document.createElement('p');
+    bookPagesEl.textContent = `Pages: ${pages}`;
 
-    const bookRead = document.createElement('p');
-    bookRead.style.display = 'inline-block';
-    bookRead.textContent = `Read it?: ${read ? 'read' : 'unread'}`;
+    const bookReadEl = document.createElement('p');
+    bookReadEl.textContent = `Read it?: ${read ? 'read' : 'unread'}`;
 
-    bookCard.appendChild(bookTitle);
-    bookCard.appendChild(bookAuthor);
-    bookCard.appendChild(bookPages);
-    bookCard.appendChild(bookRead);
+    const buttonsContainer = document.createElement('div');
+    buttonsContainer.classList.add('buttons-container');
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.classList.add('delete-btn');
+    deleteBtn.onclick = () => deleteBook(book.id);
+
+    const readBtn = document.createElement('button');
+    readBtn.classList.add('change-btn');
+    readBtn.textContent = 'Change';
+    readBtn.addEventListener('click', () => {
+      book.changeReadStatus();
+      bookReadEl.textContent = `Read it?: ${read ? 'read' : 'unread'}`;
+    });
+
+    buttonsContainer.appendChild(deleteBtn);
+    buttonsContainer.appendChild(readBtn);
+
+    bookCard.appendChild(bookTitleEl);
+    bookCard.appendChild(bookAuthorEl);
+    bookCard.appendChild(bookPagesEl);
+    bookCard.appendChild(bookReadEl);
+    bookCard.appendChild(buttonsContainer);
     booksContainer.appendChild(bookCard);
   });
+}
+
+function deleteBook(id) {
+  myLibrary = myLibrary.filter(book => book.id !== id);
+  renderBooks(myLibrary);
 }
 
 function capitalize(words) {
