@@ -28,7 +28,6 @@ closeDialog.addEventListener('click', () => {
 
 form.addEventListener('submit', e => {
   e.preventDefault();
-  dialog.close();
 
   const formData = new FormData(form);
   const id = crypto.randomUUID();
@@ -41,8 +40,7 @@ form.addEventListener('submit', e => {
   const book = new Book(id, bookTitle, bookAuthor, bookPages, bookRead);
   myLibrary.push(book);
   renderBooks(myLibrary);
-
-  console.log(myLibrary);
+  dialog.close();
   form.reset();
 });
 
@@ -77,10 +75,10 @@ function renderBooks(array) {
 
     const readBtn = document.createElement('button');
     readBtn.classList.add('change-btn');
-    readBtn.textContent = 'Change';
+    readBtn.textContent = `${book.read ? 'Unread' : 'Read'}`;
     readBtn.addEventListener('click', () => {
       book.changeReadStatus();
-      bookReadEl.textContent = `Read it?: ${read ? 'read' : 'unread'}`;
+      renderBooks(myLibrary);
     });
 
     buttonsContainer.appendChild(deleteBtn);
@@ -96,8 +94,12 @@ function renderBooks(array) {
 }
 
 function deleteBook(id) {
-  myLibrary = myLibrary.filter(book => book.id !== id);
-  renderBooks(myLibrary);
+  let confirmQuestion = confirm('Are you sure you want to delete this book?');
+
+  if (confirmQuestion) {
+    myLibrary = myLibrary.filter(book => book.id !== id);
+    renderBooks(myLibrary);
+  }
 }
 
 function capitalize(words) {
