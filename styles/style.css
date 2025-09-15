@@ -32,7 +32,6 @@ button {
 }
 
 #add-book {
-  border: 1px solid skyblue;
   border-radius: 6px;
   background-color: rgb(204, 255, 248);
   padding: 2px 10px;
