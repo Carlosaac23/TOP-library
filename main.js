@@ -3,21 +3,6 @@ const form = document.querySelector('.form');
 const addBookBtn = document.getElementById('add-book');
 const closeDialog = document.querySelector('.close-dialog');
 
-let myLibrary = [];
-
-function Book(id, title, author, pages, read) {
-  this.id = id;
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.read = read;
-}
-
-Book.prototype.changeReadStatus = function () {
-  this.read = !this.read;
-  return this.read;
-};
-
 addBookBtn.addEventListener('click', () => {
   dialog.showModal();
 });
@@ -25,6 +10,33 @@ addBookBtn.addEventListener('click', () => {
 closeDialog.addEventListener('click', () => {
   dialog.close();
 });
+
+let myLibrary = [];
+
+class Book {
+  constructor(id, title, author, pages, read, opinion) {
+    this.id = id;
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.read = read;
+    this.opinion = opinion;
+  }
+
+  changeReadStatus() {
+    this.read = !this.read;
+    return this.read;
+  }
+
+  static deleteBook(id) {
+    let confirmQuestion = confirm('Are you sure you want to delete this book?');
+
+    if (confirmQuestion) {
+      myLibrary = myLibrary.filter(book => book.id !== id);
+      renderBooks(myLibrary);
+    }
+  }
+}
 
 form.addEventListener('submit', e => {
   e.preventDefault();
@@ -36,8 +48,16 @@ form.addEventListener('submit', e => {
   const bookAuthor = document.getElementById('author').value;
   const bookPages = document.getElementById('pages').value;
   const bookRead = JSON.parse(formData.get('read'));
+  const bookOpinion = document.getElementById('opinion').value;
 
-  const book = new Book(id, bookTitle, bookAuthor, bookPages, bookRead);
+  const book = new Book(
+    id,
+    bookTitle,
+    bookAuthor,
+    bookPages,
+    bookRead,
+    bookOpinion
+  );
   myLibrary.push(book);
   renderBooks(myLibrary);
   dialog.close();
@@ -49,7 +69,7 @@ function renderBooks(array) {
   booksContainer.innerHTML = '';
 
   array.forEach(book => {
-    const { title, author, pages, read } = book;
+    const { title, author, pages, read, opinion } = book;
     const bookCard = document.createElement('div');
     bookCard.classList.add('book__card');
 
@@ -65,13 +85,17 @@ function renderBooks(array) {
     const bookReadEl = document.createElement('p');
     bookReadEl.textContent = `Read it?: ${read ? 'read' : 'unread'}`;
 
+    const bookOpinionEl = document.createElement('p');
+    bookOpinionEl.classList.add('opinion-text');
+    bookOpinionEl.textContent = `Opinion: ${opinion}`;
+
     const buttonsContainer = document.createElement('div');
     buttonsContainer.classList.add('buttons-container');
 
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
     deleteBtn.classList.add('delete-btn');
-    deleteBtn.onclick = () => deleteBook(book.id);
+    deleteBtn.onclick = () => Book.deleteBook(book.id);
 
     const readBtn = document.createElement('button');
     readBtn.classList.add('change-btn');
@@ -88,18 +112,10 @@ function renderBooks(array) {
     bookCard.appendChild(bookAuthorEl);
     bookCard.appendChild(bookPagesEl);
     bookCard.appendChild(bookReadEl);
+    bookCard.appendChild(bookOpinionEl);
     bookCard.appendChild(buttonsContainer);
     booksContainer.appendChild(bookCard);
   });
-}
-
-function deleteBook(id) {
-  let confirmQuestion = confirm('Are you sure you want to delete this book?');
-
-  if (confirmQuestion) {
-    myLibrary = myLibrary.filter(book => book.id !== id);
-    renderBooks(myLibrary);
-  }
 }
 
 function capitalize(words) {
