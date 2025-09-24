@@ -60,7 +60,7 @@ button:active {
   border-radius: 6px;
   box-shadow: 1px 2px 0 rgb(0 0 0 / 0.05);
   width: 200px;
-  height: 250px;
+  height: 300px;
 }
 
 .book__card h2 {
@@ -144,6 +144,10 @@ dialog h2 {
   border-radius: 6px;
 }
 
+.form input::placeholder {
+  font-size: 0.9rem;
+}
+
 .form input:focus {
   outline: none;
   border: 1px solid var(--border-focus-color);
@@ -153,4 +157,31 @@ dialog h2 {
   border: 1px solid var(--border-color);
   border-radius: 6px;
   margin-bottom: 10px;
+}
+
+.form textarea {
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 2px 0 0 4px;
+  resize: none;
+  margin-bottom: 10px;
+}
+
+.form textarea::placeholder {
+  font-size: 0.9rem;
+}
+
+.form textarea:focus {
+  outline: none;
+  border: 1px solid var(--border-focus-color);
+}
+
+.opinion-text {
+  background-color: #cccccc;
+  padding: 8px;
+  border-radius: 6px;
+  margin-top: 6px;
+  overflow: auto;
+  text-wrap: balance;
+  max-height: 80px;
 }
