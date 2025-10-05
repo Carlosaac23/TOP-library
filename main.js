@@ -3,6 +3,32 @@ const form = document.querySelector('.form');
 const addBookBtn = document.getElementById('add-book');
 const closeDialog = document.querySelector('.close-dialog');
 
+const title = document.getElementById('title');
+const titleError = document.querySelector('#title + span.error');
+
+const author = document.getElementById('author');
+const authorError = document.querySelector('#author + span.error');
+
+title.addEventListener('input', () => {
+  if (title.validity.valid) {
+    titleError.textContent = '';
+    titleError.className = 'error';
+  } else {
+    const messages = createMessages(title);
+    showError(title, titleError, messages);
+  }
+});
+
+author.addEventListener('input', () => {
+  if (author.validity.valid) {
+    authorError.textContent = '';
+    authorError.className = 'error';
+  } else {
+    const messages = createMessages(author);
+    showError(author, authorError, messages);
+  }
+});
+
 addBookBtn.addEventListener('click', () => {
   dialog.showModal();
 });
@@ -49,6 +75,10 @@ form.addEventListener('submit', e => {
   const bookPages = document.getElementById('pages').value;
   const bookRead = JSON.parse(formData.get('read'));
   const bookOpinion = document.getElementById('opinion').value;
+
+  if (!title.validity.valid || !author.validity.valid) {
+    showError();
+  }
 
   const book = new Book(
     id,
@@ -123,4 +153,28 @@ function capitalize(words) {
     .split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(' ');
+}
+
+function createMessages(fieldName) {
+  return {
+    missing: `You need to enter a ${fieldName.name}.`,
+    tooLong: `${capitalize(fieldName.name)} must be a maximum of ${
+      fieldName.maxLength
+    } characters; you entered ${fieldName.value.length}`,
+    tooShort: `${capitalize(fieldName.name)} should be at least ${
+      fieldName.minLength
+    } characters; you entered ${fieldName.value.length}.`,
+  };
+}
+
+function showError(input, span, messages) {
+  if (input.validity.valueMissing) {
+    span.textContent = messages.missing;
+  } else if (input.validity.tooLong) {
+    span.textContent = messages.tooLong;
+  } else if (input.validity.tooShort) {
+    span.textContent = messages.tooShort;
+  }
+
+  span.className = 'error active';
 }
