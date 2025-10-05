@@ -27,7 +27,10 @@
           id="title"
           required
           placeholder="Meditations"
+          minlength="2"
+          maxlength="40"
         />
+        <span class="error" aria-live="polite"></span>
 
         <label for="author">Author</label>
         <input
@@ -36,7 +39,10 @@
           id="author"
           required
           placeholder="Marcos Aurelius"
+          minlength="10"
+          maxlength="40"
         />
+        <span class="error" aria-live="polite"></span>
 
         <label for="pages">Pages</label>
         <input
@@ -45,6 +51,7 @@
           id="pages"
           required
           placeholder="e.g 96"
+          min="0"
         />
 
         <fieldset>
