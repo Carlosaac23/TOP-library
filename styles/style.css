@@ -108,6 +108,7 @@ button:active {
 }
 
 dialog {
+  padding: 20px;
   position: absolute;
   inset: 0;
   margin: auto;
@@ -184,4 +185,15 @@ dialog h2 {
   overflow: auto;
   text-wrap: balance;
   max-height: 80px;
+}
+
+.error {
+  background-color: rgb(255, 229, 229);
+  border-radius: 6px;
+  color: rgb(255, 33, 33);
+  padding: 0;
+}
+
+.error.active {
+  padding: 0 4px;
 }
