@@ -139,6 +139,22 @@ dialog h2 {
   margin-bottom: 0;
 }
 
+.form label[for='title']::after,
+.form label[for='author']::after,
+.form label[for='pages']::after {
+  content: '*';
+  color: red;
+  margin-left: 1px;
+}
+
+.form input:invalid {
+  border-color: red;
+}
+
+.form input:valid {
+  border-color: rgb(0, 175, 0);
+}
+
 .form input {
   padding: 0 0 0 6px;
   border: 1px solid var(--border-color);
@@ -151,7 +167,6 @@ dialog h2 {
 
 .form input:focus {
   outline: none;
-  border: 1px solid var(--border-focus-color);
 }
 
 .form fieldset {
@@ -185,6 +200,10 @@ dialog h2 {
   overflow: auto;
   text-wrap: balance;
   max-height: 80px;
+}
+
+.optional {
+  font-size: 0.875rem;
 }
 
 .error {
