@@ -9,25 +9,32 @@ const titleError = document.querySelector('#title + span.error');
 const author = document.getElementById('author');
 const authorError = document.querySelector('#author + span.error');
 
-title.addEventListener('input', () => {
-  if (title.validity.valid) {
-    titleError.textContent = '';
-    titleError.className = 'error';
+const pages = document.getElementById('pages');
+const pagesError = document.querySelector('#pages + span.error');
+
+pages.addEventListener('input', () => {
+  if (pages.validity.valid) {
+    pagesError.textContent = '';
+    pagesError.className = 'error';
   } else {
-    const messages = createMessages(title);
-    showError(title, titleError, messages);
+    showErrorPages(pages, pagesError, 'You need to enter a number of pages.');
   }
 });
 
-author.addEventListener('input', () => {
-  if (author.validity.valid) {
-    authorError.textContent = '';
-    authorError.className = 'error';
-  } else {
-    const messages = createMessages(author);
-    showError(author, authorError, messages);
-  }
-});
+handleListener(title, titleError);
+handleListener(author, authorError);
+
+function handleListener(input, errorSpan) {
+  input.addEventListener('input', () => {
+    if (input.validity.valid) {
+      errorSpan.textContent = '';
+      errorSpan.className = 'error';
+    } else {
+      const messages = createMessages(input);
+      showError(input, errorSpan, messages);
+    }
+  });
+}
 
 addBookBtn.addEventListener('click', () => {
   dialog.showModal();
@@ -76,9 +83,26 @@ form.addEventListener('submit', e => {
   const bookRead = JSON.parse(formData.get('read'));
   const bookOpinion = document.getElementById('opinion').value;
 
-  if (!title.validity.valid || !author.validity.valid) {
-    showError();
+  let hasErrors = false;
+
+  if (!title.validity.valid) {
+    const messages = createMessages(title);
+    showError(title, titleError, messages);
+    hasErrors = true;
   }
+
+  if (!author.validity.valid) {
+    const messages = createMessages(author);
+    showError(author, authorError, messages);
+    hasErrors = true;
+  }
+
+  if (!pages.validity.valid) {
+    showErrorPages(pages, pagesError, 'You need to enter a number of pages.');
+    hasErrors = true;
+  }
+
+  if (hasErrors) return;
 
   const book = new Book(
     id,
@@ -167,14 +191,20 @@ function createMessages(fieldName) {
   };
 }
 
-function showError(input, span, messages) {
+function showError(input, errorSpan, messages) {
   if (input.validity.valueMissing) {
-    span.textContent = messages.missing;
+    errorSpan.textContent = messages.missing;
   } else if (input.validity.tooLong) {
-    span.textContent = messages.tooLong;
+    errorSpan.textContent = messages.tooLong;
   } else if (input.validity.tooShort) {
-    span.textContent = messages.tooShort;
+    errorSpan.textContent = messages.tooShort;
   }
 
-  span.className = 'error active';
+  errorSpan.className = 'error active';
+}
+
+function showErrorPages(input, errorSpan, message) {
+  if (input.validity.valueMissing) {
+    errorSpan.textContent = message;
+  }
 }
