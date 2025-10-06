@@ -12,20 +12,23 @@ const authorError = document.querySelector('#author + span.error');
 const pages = document.getElementById('pages');
 const pagesError = document.querySelector('#pages + span.error');
 
-pages.addEventListener('input', () => {
+pages.addEventListener('blur', () => {
   if (pages.validity.valid) {
     pagesError.textContent = '';
     pagesError.className = 'error';
   } else {
-    showErrorPages(pages, pagesError, 'You need to enter a number of pages.');
+    const messages = createPagesMessages(pages);
+    showErrorPages(pages, pagesError, messages);
   }
 });
 
-handleListener(title, titleError);
-handleListener(author, authorError);
+handleListener('blur', title, titleError);
+handleListener('input', title, titleError);
+handleListener('blur', author, authorError);
+handleListener('input', author, authorError);
 
-function handleListener(input, errorSpan) {
-  input.addEventListener('input', () => {
+function handleListener(type, input, errorSpan) {
+  input.addEventListener(type, () => {
     if (input.validity.valid) {
       errorSpan.textContent = '';
       errorSpan.className = 'error';
@@ -98,7 +101,8 @@ form.addEventListener('submit', e => {
   }
 
   if (!pages.validity.valid) {
-    showErrorPages(pages, pagesError, 'You need to enter a number of pages.');
+    const messages = createPagesMessages();
+    showErrorPages(pages, pagesError, messages);
     hasErrors = true;
   }
 
@@ -191,6 +195,13 @@ function createMessages(fieldName) {
   };
 }
 
+function createPagesMessages() {
+  return {
+    missing: 'You need to enter a number of pages.',
+    rangeUnderFlow: 'You need to enter at least 10 pages',
+  };
+}
+
 function showError(input, errorSpan, messages) {
   if (input.validity.valueMissing) {
     errorSpan.textContent = messages.missing;
@@ -203,8 +214,12 @@ function showError(input, errorSpan, messages) {
   errorSpan.className = 'error active';
 }
 
-function showErrorPages(input, errorSpan, message) {
+function showErrorPages(input, errorSpan, messages) {
   if (input.validity.valueMissing) {
-    errorSpan.textContent = message;
+    errorSpan.textContent = messages.missing;
+  } else if (input.validity.rangeUnderflow) {
+    errorSpan.textContent = messages.rangeUnderFlow;
   }
+
+  errorSpan.className = 'error active';
 }
